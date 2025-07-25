@@ -14,6 +14,7 @@ This is the README for extension "cat-cpu-monitor-vscode".
 这是VS Code扩展"cat-cpu-monitor-vscode"的说明文档。
 
 See it on dev.to: https://dev.to/mengaidev/meet-your-new-coding-companion-cat-cpu-monitor-for-vs-code-7o6
+
 在dev.to上查看：https://dev.to/mengaidev/meet-your-new-coding-companion-cat-cpu-monitor-for-vs-code-7o6
 
 ## Features / 功能特性
