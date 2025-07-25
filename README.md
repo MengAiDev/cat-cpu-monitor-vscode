@@ -1,71 +1,58 @@
-# cat-cpu-monitor-vscode README
+# cat-cpu-monitor-vscode README / 猫猫CPU监控VS Code扩展 说明文档
 
-This is the README for your extension "cat-cpu-monitor-vscode". After writing up a brief description, we recommend including the following sections.
+This is the README for extension "cat-cpu-monitor-vscode". 
+这是VS Code扩展"cat-cpu-monitor-vscode"的说明文档。
 
-## Features
+## Features / 功能特性
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- 🐱 **Animated Cat Status Bar** / **动画猫猫状态栏**
+  - Displays cute cat animations in VS Code status bar
+  - 在VS Code状态栏显示可爱的猫猫动画
+  - Animation speed changes based on CPU usage (faster when CPU usage is high)
+  - 动画速度根据CPU使用率变化（CPU使用率高时动画更快）
 
-For example if there is an image subfolder under your extension project workspace:
+- 📊 **Real-time CPU Monitoring** / **实时CPU监控**
+  - Shows current CPU usage in status bar tooltip
+  - 在状态栏提示中显示当前CPU使用率
+  - Updates every 5 seconds
+  - 每5秒更新一次
 
-\!\[feature X\]\(images/feature-x.png\)
+- 🔝 **Top Processes Viewer** / **进程查看器**
+  - Click status bar icon to view top 8 CPU-consuming processes
+  - 点击状态栏图标可查看CPU占用最高的8个进程
+  - Supports Windows (PowerShell) and Linux/macOS (ps command)
+  - 支持Windows(PowerShell)和Linux/macOS(ps命令)
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+- 🎨 **Beautiful Process Visualization** / **美观的进程可视化**
+  - Colorful gradient bars show CPU usage percentage
+  - 彩色渐变条显示CPU使用百分比
+  - Clean, modern interface matching VS Code theme
+  - 简洁现代的界面，匹配VS Code主题
 
-## Requirements
+![Demo Screenshot](images/demo.png)
+![Process Viewer](images/image.png)
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+## Requirements / 系统要求
 
-## Extension Settings
+Test on Ubuntu. No system requirements
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
+## Extension Settings / 扩展设置
 
 This extension contributes the following settings:
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+本扩展提供以下设置：
 
-## Known Issues
+* `catCpuMonitor.animationSpeed.base`: Base animation speed in milliseconds (default: 1000)
+* `catCpuMonitor.animationSpeed.base`: 基础动画速度(毫秒，默认: 1000)
+* `catCpuMonitor.updateInterval`: How often to check CPU usage in seconds (default: 5)
+* `catCpuMonitor.updateInterval`: CPU使用率检查间隔(秒，默认: 5)
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+## Known Issues / 已知问题
 
-## Release Notes
+None
 
-Users appreciate release notes as you update your extension.
+## Release Notes / 版本说明
 
-### 1.0.0
 
-Initial release of ...
 
-### 1.0.1
 
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**

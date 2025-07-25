@@ -42,7 +42,7 @@ function getCpuInfo() {
 }
 
 // Get process list
-function getTopProcesses(): Thenable<{ name: string; cpu: number }[]> {
+function getTopProcesses(): Promise<{ name: string; cpu: number }[]> {
     return new Promise((resolve) => {
         const platform = process.platform;
         let command = '';
@@ -63,19 +63,20 @@ function getTopProcesses(): Thenable<{ name: string; cpu: number }[]> {
             const processes: { name: string; cpu: number }[] = [];
             const lines = stdout.trim().split('\n');
             
-            // Skip header line
-            for (let i = 1; i < lines.length; i++) {
+            // Skip header line for Windows
+            const startIndex = platform === 'win32' ? 2 : 0;
+            
+            for (let i = startIndex; i < lines.length; i++) {
                 const line = lines[i].trim();
                 if (!line) continue;
                 
                 if (platform === 'win32') {
                     // Windows PowerShell output processing
-                    const match = line.match(/(\S+)\s+([\d.]+)/);
-                    if (match && match.length >= 3) {
-                        processes.push({
-                            name: match[1],
-                            cpu: parseFloat(match[2])
-                        });
+                    const parts = line.split(/\s+/).filter(part => part.trim() !== '');
+                    if (parts.length >= 2) {
+                        const cpu = parseFloat(parts[parts.length - 1]);
+                        const name = parts.slice(0, -1).join(' ');
+                        processes.push({ name, cpu });
                     }
                 } else {
                     // Unix output processing
@@ -89,7 +90,7 @@ function getTopProcesses(): Thenable<{ name: string; cpu: number }[]> {
                 }
             }
             
-            resolve(processes);
+            resolve(processes.slice(0, 8)); // Ensure we only return top 8
         });
     });
 }
@@ -103,10 +104,17 @@ export function activate(context: vscode.ExtensionContext) {
     statusBarItem.show();
     
     let animationIndex = 0;
-    let animationSpeed = 1000; // 默认动画速度 (ms)
     let animationInterval: NodeJS.Timeout | null = null;
     
-    // Update cat animation
+    // Get configuration for animation speed and update interval
+    const config = vscode.workspace.getConfiguration('catCpuMonitor');
+    let animationSpeed = config.get<number>('animationSpeed.base', 1000); // default 1000ms
+    let updateInterval = config.get<number>('updateInterval', 5) * 1000; // default 5 seconds
+    
+    // Store CPU monitor interval
+    let cpuMonitorInterval: NodeJS.Timeout | null = null;
+    
+    // Update cat animation function
     function updateCatAnimation() {
         if (animationInterval) {
             clearInterval(animationInterval);
@@ -121,40 +129,62 @@ export function activate(context: vscode.ExtensionContext) {
         }, animationSpeed);
     }
     
-    // Initial animation
-    updateCatAnimation();
-    
-    // Periodically update CPU usage
-    setInterval(async () => {
-        try {
-            const usage = await getCpuUsage();
-            const roundedUsage = Math.round(usage * 10) / 10;
-            
-            // Adjust animation speed based on CPU usage
-            // Higher CPU usage = faster animation
-            if (usage < 20) {
-                animationSpeed = 1000;
-            } else if (usage < 40) {
-                animationSpeed = 800;
-            } else if (usage < 60) {
-                animationSpeed = 600;
-            } else if (usage < 80) {
-                animationSpeed = 400;
-            } else {
-                animationSpeed = 200;
-            }
-            
-            // Update status bar tooltip
-            statusBarItem.tooltip = `CPU Usage: ${roundedUsage}%`;
-            
-            // Update animation
-            updateCatAnimation();
-        } catch (error) {
-            console.error('Failed to get CPU usage:', error);
+    // Update CPU monitor function
+    function startCpuMonitor() {
+        if (cpuMonitorInterval) {
+            clearInterval(cpuMonitorInterval);
         }
-    }, 5000);
+        
+        cpuMonitorInterval = setInterval(async () => {
+            try {
+                const usage = await getCpuUsage();
+                const roundedUsage = Math.round(usage * 10) / 10;
+                
+                // Adjust animation speed based on CPU usage
+                if (usage < 20) {
+                    animationSpeed = config.get<number>('animationSpeed.base', 1000);
+                } else if (usage < 40) {
+                    animationSpeed = config.get<number>('animationSpeed.base', 1000) * 0.8;
+                } else if (usage < 60) {
+                    animationSpeed = config.get<number>('animationSpeed.base', 1000) * 0.6;
+                } else if (usage < 80) {
+                    animationSpeed = config.get<number>('animationSpeed.base', 1000) * 0.4;
+                } else {
+                    animationSpeed = config.get<number>('animationSpeed.base', 1000) * 0.2;
+                }
+                
+                // Update status bar tooltip
+                statusBarItem.tooltip = `CPU Usage: ${roundedUsage}%`;
+                
+                // Update animation
+                updateCatAnimation();
+            } catch (error) {
+                console.error('Failed to get CPU usage:', error);
+            }
+        }, updateInterval);
+    }
     
-    // Register command
+    // Initial animation and monitoring
+    updateCatAnimation();
+    startCpuMonitor();
+    
+    // Listen for configuration changes
+    context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(e => {
+        if (e.affectsConfiguration('catCpuMonitor')) {
+            // Get updated configuration
+            const newConfig = vscode.workspace.getConfiguration('catCpuMonitor');
+            
+            // Update values
+            animationSpeed = newConfig.get<number>('animationSpeed.base', 1000);
+            updateInterval = newConfig.get<number>('updateInterval', 5) * 1000;
+            
+            // Restart animation and monitoring
+            updateCatAnimation();
+            startCpuMonitor();
+        }
+    }));
+    
+    // Register command to show processes
     const showProcessesCommand = vscode.commands.registerCommand('catCpuMonitor.showProcesses', async () => {
         const processes = await getTopProcesses();
         
@@ -288,7 +318,21 @@ export function activate(context: vscode.ExtensionContext) {
         panel.webview.html = html;
     });
     
-    context.subscriptions.push(statusBarItem, showProcessesCommand);
+    // Add to subscriptions
+    context.subscriptions.push(
+        statusBarItem,
+        showProcessesCommand,
+        {
+            dispose: () => {
+                if (cpuMonitorInterval) {
+                    clearInterval(cpuMonitorInterval);
+                }
+                if (animationInterval) {
+                    clearInterval(animationInterval);
+                }
+            }
+        }
+    );
 }
 
 export function deactivate() {

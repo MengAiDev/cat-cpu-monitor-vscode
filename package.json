@@ -3,7 +3,7 @@
     "displayName": "Cat CPU Monitor",
     "description": "在状态栏显示猫咪动画，速度随CPU使用率变化，点击显示占用最高的进程",
     "version": "1.0.0",
-    "publisher": "your-name",
+    "publisher": "MengAiDev",
     "engines": {
         "vscode": "^1.75.0"
     },
@@ -20,7 +20,22 @@
                 "command": "catCpuMonitor.showProcesses",
                 "title": "显示CPU占用最高的进程"
             }
-        ]
+        ],
+        "configuration": {
+            "title": "Cat CPU Monitor",
+            "properties": {
+                "catCpuMonitor.animationSpeed.base": {
+                    "type": "number",
+                    "default": 1000,
+                    "description": "基础动画速度(毫秒)"
+                },
+                "catCpuMonitor.updateInterval": {
+                    "type": "number",
+                    "default": 5,
+                    "description": "CPU使用率检查间隔(秒)"
+                }
+            }
+        }
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
@@ -28,8 +43,12 @@
         "watch": "tsc -watch -p ./"
     },
     "devDependencies": {
+        "@types/jest": "^30.0.0",
         "@types/node": "^16.11.7",
         "@types/vscode": "^1.75.0",
-        "typescript": "^4.7.4"
+        "typescript": "^5.8.3"
+    },
+    "dependencies": {
+        "generator-code": "^1.11.10"
     }
 }
