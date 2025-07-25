@@ -1,5 +1,15 @@
 # cat-cpu-monitor-vscode README / 猫猫CPU监控VS Code扩展 说明文档
 
+```
+                 _                                                                        _   _                  
+   ___    __ _  | |_            ___   _ __    _   _           _ __ ___     ___    _ __   (_) | |_    ___    _ __ 
+  / __|  / _` | | __|  _____   / __| | '_ \  | | | |  _____  | '_ ` _ \   / _ \  | '_ \  | | | __|  / _ \  | '__|
+ | (__  | (_| | | |_  |_____| | (__  | |_) | | |_| | |_____| | | | | | | | (_) | | | | | | | | |_  | (_) | | |   
+  \___|  \__,_|  \__|          \___| | .__/   \__,_|         |_| |_| |_|  \___/  |_| |_| |_|  \__|  \___/  |_|   
+                                     |_|                                                                         
+```
+
+
 This is the README for extension "cat-cpu-monitor-vscode". 
 这是VS Code扩展"cat-cpu-monitor-vscode"的说明文档。
 
@@ -29,8 +39,8 @@ This is the README for extension "cat-cpu-monitor-vscode".
   - Clean, modern interface matching VS Code theme
   - 简洁现代的界面，匹配VS Code主题
 
-![Demo Screenshot](images/demo.png)
-![Process Viewer](images/image.png)
+![Demo Screenshot](https://github.com/MengAiDev/cat-cpu-monitor-vscode/blob/main/images/demo.png)
+![Process Viewer](https://github.com/MengAiDev/cat-cpu-monitor-vscode/raw/main/images/image.png)
 
 ## Requirements / 系统要求
 
@@ -53,6 +63,7 @@ None
 
 ## Release Notes / 版本说明
 
+v1.0.0 First Release (Basic feature OK)
 
 
 
