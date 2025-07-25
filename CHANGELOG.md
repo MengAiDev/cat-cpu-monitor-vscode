@@ -6,5 +6,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
-- Initial release
+- v1.0.0
 First Release (Basic feature OK).
+
+- v1.0.1
+Add icon

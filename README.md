@@ -64,6 +64,5 @@ None
 ## Release Notes / 版本说明
 
 v1.0.0 First Release (Basic feature OK)
-
-
+v1.0.1 Add icon
 
