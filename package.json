@@ -2,7 +2,7 @@
     "name": "cat-cpu-monitor",
     "displayName": "Cat CPU Monitor",
     "description": "在状态栏显示猫咪动画，速度随CPU使用率变化，点击显示占用最高的进程",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "publisher": "MengAiDev",
     "icon":"images/icon.png",
     "engines": {
